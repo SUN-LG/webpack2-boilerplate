@@ -75,7 +75,14 @@ const webpackConfig = merge(baseWebpackConfig, {
     * 先将第三方库和运行时打包到vendor中，然后再将运行时打包到manifest中，这样就实现了运行时代码的分离。
     */
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'manifest'],
+      name: 'vendor',
+      // this assumes your vendor imports exist in the node_modules directory
+      minChunks(module) {
+        return module.context && module.context.indexOf('node_modules') !== -1
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
       minChunks: Infinity
     }),
     new ChunkManifestPlugin({

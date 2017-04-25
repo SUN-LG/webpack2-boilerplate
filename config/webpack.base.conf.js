@@ -4,7 +4,7 @@ const config = require('./config')
 module.exports = {
   // 入口配置
   entry: {
-    index: './src/index',
+    index: './src/index'
     /**
     * vendor 用于存储第三方库
     * 为什么不直接把第三方库，直接罗列在这，而是使用vendor.js文件？
@@ -14,7 +14,7 @@ module.exports = {
     * 在没有CommonsChunkPlugin时，entry配置的最后一项，会作为应用的入口文件
     * 如果存在CommonsChunkPlugin，那么最后一个由CommonsChunkPlugin打包出来的文件作为应用入口文件。
     */
-    vendor: './src/vendor'
+    // vendor: './src/vendor'
   },
   output: {
     // path 打包之后输出的目录

@@ -50,4 +50,5 @@ import SpaHistory from 'spa-history'
 
 console.log('hello world')
 console.log('webpack');
+console.log('something changed');
  /* eslint-disable */
