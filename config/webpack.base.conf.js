@@ -1,5 +1,6 @@
 const { resolve } = require('path')
 const config = require('./config')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
   // 入口配置
@@ -14,6 +15,7 @@ module.exports = {
     * 在没有CommonsChunkPlugin时，entry配置的最后一项，会作为应用的入口文件
     * 如果存在CommonsChunkPlugin，那么最后一个由CommonsChunkPlugin打包出来的文件作为应用入口文件。
     */
+    // 改为隐式提取第三方库文件，所以本行注释掉了。
     // vendor: './src/vendor'
   },
   output: {
@@ -63,11 +65,14 @@ module.exports = {
           }
         ]
       },
-      {
-        test: /\.css$/,
-        // 使用post-css的autoprefixer，自动给css添加前缀。
-        use: ['style-loader', 'css-loader', 'postcss-loader']
-      },
+      // {
+      //   test: /\.scss$/,
+      //   // 使用post-css的autoprefixer，自动给css添加前缀。
+      //   use: ExtractTextPlugin.extract({
+      //     use: ['css-loader', 'postcss-loader', 'sass-loader'],
+      //     fallback: 'style-loader'
+      //   })
+      // },
       {
         test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
         use: [

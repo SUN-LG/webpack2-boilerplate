@@ -8,10 +8,14 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin')
 const WebpackChunkHash = require('webpack-chunk-hash')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const utils = require('./utils')
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
-
+    rules: utils.styleLoaders({
+      sourceMap: config.build.cssSourceMap,
+      extract: true
+    })
   },
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
@@ -29,8 +33,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       sourceMap: true
     }),
     // extract css into its own file
+    // extract-text-webpack-plugin中filename，不能使用resolve，否则出bug。
     new ExtractTextPlugin({
-      filename: resolve(__dirname, 'dist', 'css/[name].[contenthash].css')
+      filename: 'css/[name].[contenthash].css'
     }),
     // new CopyWebpackPlugin([
     //   {
@@ -63,7 +68,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     * 不过可以通过以下方法解决：
     */
     /**
-    * names属性可以是数组，此时相当于：
     * new webpack.optimize.CommonsChunkPlugin({
     *   names: 'vendor'
     * })，
