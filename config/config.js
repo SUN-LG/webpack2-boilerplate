@@ -14,17 +14,19 @@ module.exports = {
   },
   dev: {
     env: 'development',
-    publicPath: '/assets/',
+    publicPath: '/',
     cssSourceMap: false,
-    devServer: {
-      port: 8100,
-      proxy: {
-        '/api/auth/': {
-          target: 'http://api.example.dev',
-          changeOrigin: true,
-          pathRewrite: { '^/api': '' }
-        }
-      }
-    }
+    port: 9000,
+    autoOpenBrowser: true
+    // devServer: {
+    //   port: 8100,
+    //   proxy: {
+    //     '/api/auth/': {
+    //       target: 'http://api.example.dev',
+    //       changeOrigin: true,
+    //       pathRewrite: { '^/api': '' }
+    //     }
+    //   }
+    // }
   }
 }

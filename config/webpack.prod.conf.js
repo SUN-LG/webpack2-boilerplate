@@ -9,6 +9,7 @@ const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin')
 const WebpackChunkHash = require('webpack-chunk-hash')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const utils = require('./utils')
+const rootPath = resolve(__dirname, '..')
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -19,7 +20,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
-    path: resolve(__dirname, '..', config.build.assetsRoot),
+    path: resolve(rootPath, config.build.assetsRoot),
     filename: 'js/[name].[chunkhash].js',
     chunkFilename: 'js/[id].[chunkhash].js'
   },
@@ -37,13 +38,13 @@ const webpackConfig = merge(baseWebpackConfig, {
     new ExtractTextPlugin({
       filename: 'css/[name].[contenthash].css'
     }),
-    // new CopyWebpackPlugin([
-    //   {
-    //     from: resolve(__dirname, './static'),
-    //     to: config.build.assetsSubDirectory,
-    //     ignore: ['.*']
-    //   }
-    // ]),
+    new CopyWebpackPlugin([
+      {
+        from: resolve(rootPath, 'static'),
+        to: config.build.assetsSubDirectory,
+        ignore: ['.*']
+      }
+    ]),
     /**
     * HtmlWebpackPlugin插件，会根据模板html，重新输出index.html到'/'目录。
     *

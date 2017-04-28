@@ -47,7 +47,7 @@
 
  /* eslint-disable */
 import SpaHistory from 'spa-history'
-import './index.scss'
+import '~/index.scss'
 // import './index.css'
 
 console.log('hello world')

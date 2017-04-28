@@ -10,7 +10,7 @@ const cssLoaders = function(options = {}) {
   }
 
   function generateLoaders(loader, loderOptions) {
-    const loaders = [cssLoader]
+    const loaders = ['style-loader', cssLoader]
 
     if (loader) {
       loaders.push({
@@ -19,9 +19,11 @@ const cssLoaders = function(options = {}) {
           sourceMap: options.sourceMap
         })
       })
+      loaders.push('postcss-loader')
     }
 
     if (options.extract) {
+      loaders.shift()
       return ExtractTextPlugin.extract({
         use: loaders,
         fallback: 'style-loader'
@@ -33,7 +35,6 @@ const cssLoaders = function(options = {}) {
 
   return {
     css: generateLoaders(),
-    postcss: generateLoaders(),
     less: generateLoaders('less'),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
