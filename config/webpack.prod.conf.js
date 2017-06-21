@@ -51,7 +51,14 @@ const webpackConfig = merge(baseWebpackConfig, {
     *
     */
     new HtmlWebpackPlugin({
-      template: './src/index.ejs'
+      template: './src/index.ejs',
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true
+      }
     }),
     /**
     * CommonsChunkPlugin, 用于打包entry中重复的代码

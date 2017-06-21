@@ -57,7 +57,8 @@ module.exports = {
               比如<img>标签的src属性, webpack会把<img>引用的图片打包, 然后src的属性值替换为打包后的路径.
               如果html-loader不指定attrs参数, 默认值是img:src
               */
-              attrs: ['img:src']
+              attrs: ['img:src'],
+              minimize: true
               /*
               root项，支持定义根目录
               将根目录定义为src，<img src="/favicon.png">, 然后就会顺利的找到src下的favicon.png
