@@ -51,6 +51,6 @@ import '~/index.scss'
 // import './index.css'
 
 console.log('hello world')
-console.log('webpack');
-console.log('something changed');
+console.log('hello webpack');
+console.log('hello hello')
  /* eslint-disable */

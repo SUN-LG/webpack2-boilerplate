@@ -5,8 +5,9 @@ const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin')
-const WebpackChunkHash = require('webpack-chunk-hash')
+// const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin')
+// const WebpackChunkHash = require('webpack-chunk-hash')
+const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const utils = require('./utils')
 const rootPath = resolve(__dirname, '..')
@@ -50,7 +51,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     *
     */
     new HtmlWebpackPlugin({
-      template: './src/index.html'
+      template: './src/index.ejs'
     }),
     /**
     * CommonsChunkPlugin, 用于打包entry中重复的代码
@@ -90,11 +91,21 @@ const webpackConfig = merge(baseWebpackConfig, {
       name: 'manifest',
       minChunks: Infinity
     }),
-    new ChunkManifestPlugin({
-      filename: 'chunk-manifest.json',
-      manifestVariable: 'webpackManifest'
-    }),
-    new WebpackChunkHash()
+    // 解决下述问题的方法
+    new webpack.HashedModuleIdsPlugin(),
+
+    // 根据文件打包前的内容生成hash值，替换webpack提供的hash值。但是在项目中增加或删除模块时，可能会出现问题。因为webpack采用升序id作为模块的映射，当模块数量发生变化时，模块对应的id也会变化，所有hash值不变，反而会出现错误。 https://sebastianblade.com/using-webpack-to-achieve-long-term-cache/
+    // new WebpackChunkHash(),
+
+    // 提取manifest到一个变量，然后存储在一个单独的json文件中
+    // new ChunkManifestPlugin({
+    //   filename: 'chunk-manifest.json',
+    //   manifestVariable: 'webpackManifest'
+    // }),
+
+    // 将manifest注入到index.html中，减少http请求
+    new InlineManifestWebpackPlugin()
+
     // 定义环境变量
     /**
      * 下面定义的变量，都会成为全局变量，可以直接在模块中使用。

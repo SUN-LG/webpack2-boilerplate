@@ -48,7 +48,7 @@ module.exports = {
         use: ['babel-loader', 'eslint-loader']
       },
       {
-        test: /\.html$/,
+        test: /\.(html)$/,
         use: [
           {
             loader: 'html-loader',
