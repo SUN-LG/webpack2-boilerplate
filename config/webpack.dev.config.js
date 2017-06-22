@@ -4,6 +4,9 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const config = require('./config')
 const utils = require('./utils')
+const { resolve } = require('path')
+const rootPath = resolve(__dirname, '..')
+const src = resolve(rootPath, 'src')
 
 // 添加hot-reload到每一个entry chunk
 Object.keys(baseWebpackConfig.entry).forEach(name => {
@@ -14,9 +17,28 @@ Object.keys(baseWebpackConfig.entry).forEach(name => {
   ].concat(baseWebpackConfig.entry[name])
 })
 
-module.exports = merge(baseWebpackConfig, {
+const isCacheTurnOn = config.dev.cache
+// https://doc.webpack-china.org/loaders/cache-loader/
+const cacheConfig = {
+  test: /\.jsx?$/,
+  include: [src, resolve(rootPath, 'test')],
+  use: [
+    {
+      loader: 'cache-loader',
+      options: {
+        cacheDirectory: resolve(rootPath, '.cache')
+      }
+    },
+    'babel-loader',
+    'eslint-loader'
+  ]
+}
+
+const webpackConfig = merge(baseWebpackConfig, {
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap }).push(
+      isCacheTurnOn ? cacheConfig : []
+    )
   },
   devtool: '#cheap-module-eval-source-map',
   plugins: [
@@ -52,3 +74,5 @@ module.exports = merge(baseWebpackConfig, {
     hints: config.dev ? false : 'warning'
   }
 })
+
+module.exports = webpackConfig

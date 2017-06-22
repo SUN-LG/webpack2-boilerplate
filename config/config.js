@@ -17,7 +17,9 @@ module.exports = {
     publicPath: '/',
     cssSourceMap: false,
     port: 9000,
-    autoOpenBrowser: true
+    autoOpenBrowser: true,
+    // 是否启用缓存，来提升性能。 建议只有在有性能问题时，再开启
+    cache: false,
     // devServer: {
     //   port: 8100,
     //   proxy: {
