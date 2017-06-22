@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 const { resolve } = require('path')
 const config = require('./config')
 
@@ -124,5 +125,26 @@ module.exports = {
      * eg: import $ from 'jquery' 相当于从jQuery引入$
      */
     // jquery: 'jQuery'
-  }
+  },
+  plugins: [
+    /**
+     * 使用指定变量时，可以自动import 对应的包
+     */
+    new webpack.ProvidePlugin({
+      // 直接在文件中使用$，webpack会自动帮你加入import $ from 'jquery'
+      // $: 'jquery'
+      Promise: 'es6-promise',
+      fetch: 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch'
+    }),
+    /**
+     * 自定义全局变量，这样就可以在业务代码中使用定义的变量
+     * eg: 判断当前环境是生产还是线上
+     * const isProduction = (() => {
+         return process.env.NODE_ENV === 'production';
+       })()
+     */
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': process.env.NODE_ENV
+    })
+  ]
 }

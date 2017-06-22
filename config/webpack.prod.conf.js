@@ -113,12 +113,27 @@ const webpackConfig = merge(baseWebpackConfig, {
     // 将manifest注入到index.html中，减少http请求
     new InlineManifestWebpackPlugin()
 
-    // 定义环境变量
-    /**
-     * 下面定义的变量，都会成为全局变量，可以直接在模块中使用。
-     *
-     */
   ]
+})
+
+// 将未经webpack处理的文件，直接赋值移动到static文件夹下
+webpackConfig.rules.push({
+  exclude: [
+    /\.html$/,
+    /\.(js|jsx)$/,
+    /\.css$/,
+    /\.scss$/,
+    /\.less$/,
+    /\.json$/,
+    /\.bmp$/,
+    /\.gif$/,
+    /\.jpe?g$/,
+    /\.png$/,
+  ],
+  loader: require.resolve('file-loader'),
+  options: {
+    name: 'static/media/[name].[hash:8].[ext]',
+  }
 })
 
 if (config.build.productionGzip) {

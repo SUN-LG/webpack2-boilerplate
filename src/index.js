@@ -53,4 +53,15 @@ import '~/index.scss'
 console.log('hello world')
 console.log('hello webpack');
 console.log('hello hello')
+const pro = new Promise((res, rej) => {
+  res('ok')
+})
+  .then((res) => {
+    console.log(res);
+  })
+
+fetch('http://localhost:9000')
+  .then((res) => {
+    console.log(res)
+  })
  /* eslint-disable */
