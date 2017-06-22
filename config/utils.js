@@ -1,4 +1,5 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const autoprefixer = require('autoprefixer')
 
 const cssLoaders = function(options = {}) {
   const cssLoader = {
@@ -19,7 +20,17 @@ const cssLoaders = function(options = {}) {
           sourceMap: options.sourceMap
         })
       })
-      loaders.push('postcss-loader')
+      loaders.push({
+        loader: 'postcss-loader',
+        options: {
+          ident: 'postcss',
+          plugins: () => [
+            autoprefixer({
+              browsers: ['last 2 versions', 'Firefox ESR', '> 1%', 'ie >= 8', 'iOS >= 8', 'Android >= 4']
+            })
+          ]
+        }
+      })
     }
 
     if (options.extract) {
