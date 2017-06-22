@@ -40,10 +40,13 @@ module.exports = {
     chunkFilename: '[chunkhash].[id].js'
   },
   module: {
+    // noParse 使webpack不解析匹配正则的文件，这些文件中不应该包含import，require，define等语句。如果该文件依赖其他文件，依赖文件不会被打包进bundle。
+    // 配合alias，提高构建性能。
+    noParse: [/react|react-dom/],
     // rules 当import或require模块时，根据文件类型匹配loader。
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         include: [src, resolve(rootPath, 'test')],
         use: ['babel-loader', 'eslint-loader']
       },
@@ -96,7 +99,7 @@ module.exports = {
   *
   */
   resolve: {
-    extensions: ['.js', '.json'],
+    extensions: ['.js', 'jsx', '.json', 'less', 'scss', 'css'],
     alias: {
       /*
       将src目录定义为 ~ ,这样在模块中import其他模块时，如果模块的相对路径很深，那就可以使用 ~
@@ -105,7 +108,21 @@ module.exports = {
       可以使用 ~ 来简化
       import b from '~/components/b'
       */
-      '~': resolve(rootPath, 'src')
+      '~': resolve(rootPath, 'src'),
+      // 使用min文件，能够有效减少打包依赖个数，提升性能。  http://code.oneapm.com/javascript/2015/07/07/webpack_performance_1/
+      react: 'react/dist/react.min',
+      'react-dom': 'react-dom/dist/react-dom.min',
+      utils: resolve(rootPath, 'utils')
     }
+  },
+  /**
+   * 防止将某些 import 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖
+   */
+  externals: {
+    /**
+     * 将jQuery定义为全局变量
+     * eg: import $ from 'jquery' 相当于从jQuery引入$
+     */
+    // jquery: 'jQuery'
   }
 }

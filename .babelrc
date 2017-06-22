@@ -1,8 +1,15 @@
 {
   "presets": [
+    "latest",
     ["es2015", {"modules": false}],
-    "react"
+    "react",
+    "stage-2"
   ],
   "plugins": [
+    // https://github.com/thejameskyle/babel-handbook/blob/master/translations/zh-Hans/user-handbook.md#toc-babelrc
+    "transform-runtime",
+    ["transform-es2015-classes", {"loose": true}],
+    // es6 新增import函数，作为require的替代
+    "syntax-dynamic-import"
   ]
 }
